@@ -1,0 +1,13 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+groq
+pydantic
+pypdf
+sentence-transformers
+chromadb
+
+
+
+# python -c "import chromadb; print(chromadb.__version__)"
