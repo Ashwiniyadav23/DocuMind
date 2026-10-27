@@ -5,7 +5,7 @@ python-dotenv
 groq
 pydantic
 pypdf
-sentence-transformers
+fastembed
 chromadb
 
 

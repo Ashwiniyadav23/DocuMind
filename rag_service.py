@@ -3,7 +3,7 @@ from pathlib import Path
 
 import chromadb
 
-from config import embedding_model, TOP_K
+from config import TOP_K, get_embedding_model
 
 # Store the database inside the backend folder.
 BASE_DIR = Path(__file__).resolve().parent
@@ -27,10 +27,7 @@ def store_document_chunks(
         return 0
 
     # Generate embeddings for all chunks.
-    embeddings = embedding_model.encode(
-        chunks,
-        normalize_embeddings=True
-    )
+    embeddings = list(get_embedding_model().embed(chunks, batch_size=8))
 
     # Replace chunks from an earlier upload of this filename.
     collection.delete(where={"source": filename})
@@ -43,7 +40,7 @@ def store_document_chunks(
     collection.add(
         ids=ids,
         documents=chunks,
-        embeddings=embeddings.tolist(),
+        embeddings=[embedding.tolist() for embedding in embeddings],
         metadatas=[
             {
                 "source": filename,
@@ -87,10 +84,7 @@ def retrieve_relevant_chunks(
         return []
 
     # Embed the user's question.
-    question_embedding = embedding_model.encode(
-        question,
-        normalize_embeddings=True
-    )
+    question_embedding = next(get_embedding_model().query_embed(question))
 
     # ChromaDB performs the vector similarity search.
     results = collection.query(
