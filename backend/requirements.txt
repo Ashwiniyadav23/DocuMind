@@ -1,0 +1,17 @@
+fastapi
+uvicorn[standard]
+python-multipart
+python-dotenv
+groq
+pydantic
+pypdf
+fastembed
+chromadb
+redis
+langchain-core
+pytest
+httpx
+
+
+
+# python -c "import chromadb; print(chromadb.__version__)"
